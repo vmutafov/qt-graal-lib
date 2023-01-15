@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'org.graalvm.buildtools.native' version '0.9.19'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.graalvm.sdk:graal-sdk:22.3.0'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+}
+
+graalvmNative {
+    binaries {
+        main {
+            imageName = "libgraalmultiply"
+            sharedLibrary = true
+            verbose = true
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '17'
+        freeCompilerArgs += "-Xno-param-assertions"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = '17'
+}
